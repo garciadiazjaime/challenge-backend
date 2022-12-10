@@ -1,0 +1,72 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int      @id @default(autoincrement())
+  email    String   @unique
+  name     String?
+  lastName String?
+  Hacker   Hacker?
+  Partner  Partner?
+  Mentor   Mentor?
+}
+
+model Hacker {
+  id                 Int      @id @default(autoincrement())
+  website            String?
+  github             String?
+  linkedin           String?
+  softwareExperience String?
+  ethereumExperience String?
+  motivation         String?
+  builtBefore        String?
+  buildHackathon     String?
+  conduct            Boolean?
+  status             String?  @default("pending")
+
+  user  User   @relation(fields: [email], references: [email])
+  email String @unique
+}
+
+model Partner {
+  id              Int      @id @default(autoincrement())
+  website         String?
+  organization    String?
+  linkedin        String?
+  telegram        String?
+  twitter         String?
+  supportedBefore String?
+  whySupport      String?
+  acceptRules     Boolean?
+  status          String?  @default("pending")
+
+  user  User   @relation(fields: [email], references: [email])
+  email String @unique
+}
+
+model Mentor {
+  id                 Int      @id @default(autoincrement())
+  website            String?
+  github             String?
+  linkedin           String?
+  telegram           String?
+  twitter            String?
+  softwareExperience String?
+  ethereumExperience String?
+  ethereumMentored   String?
+  whyMentor          String?
+  acceptRules        Boolean?
+  status             String?  @default("pending")
+
+  user  User   @relation(fields: [email], references: [email])
+  email String @unique
+}
